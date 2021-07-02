@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller
 {
@@ -33,9 +35,15 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        //
+        $comment = Comment::create([
+            'question_id' => $request->questionId,
+            'created_id' => $request->createdBy,
+            'comment' => $request->comment
+        ]);
+
+        return new CommentResource($comment);
     }
 
     /**
@@ -69,7 +77,13 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $comment->update([
+            'question_id' => $request->questionId,
+            'created_id' => $request->createdBy,
+            'comment' => $request->comment
+        ]);
+
+        return new CommentResource($comment);
     }
 
     /**

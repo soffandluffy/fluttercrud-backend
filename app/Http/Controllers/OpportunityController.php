@@ -48,7 +48,16 @@ class OpportunityController extends Controller
         // $table->unsignedBigInteger('created_by');
         // $table->timestamps();
 
-        
+        $opportunity = Opportunity::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'country_id' => $request->country_id,
+            'deadline' => $request->deadline,
+            'organizer' => $request->organizer,
+            'created_by' => $request->created_by,
+        ]);
+        return new OpportunityResource($opportunity);
 
     }
 
@@ -60,7 +69,7 @@ class OpportunityController extends Controller
      */
     public function show(Opportunity $opportunity)
     {
-        return $opportunity;
+        return new OpportunityResource($opportunity);
     }
 
     /**
@@ -81,9 +90,21 @@ class OpportunityController extends Controller
      * @param  \App\Models\Opportunity  $opportunity
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Opportunity $opportunity)
+    public function update(OpportunityRequest $request, Opportunity $opportunity)
     {
         //
+        $opportunity->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'country_id' => $request->country_id,
+            'deadline' => $request->deadline,
+            'organizer' => $request->organizer,
+            'created_by' => $request->created_by,
+        ]);
+
+        return new OpportunityResource($opportunity);
+
     }
 
     /**
@@ -94,6 +115,7 @@ class OpportunityController extends Controller
      */
     public function destroy(Opportunity $opportunity)
     {
-        //
+        $opportunity->delete();
+        return "Opportunity successfully deleted!";
     }
 }

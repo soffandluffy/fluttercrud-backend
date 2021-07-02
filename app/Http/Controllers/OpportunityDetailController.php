@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OpportunityDetailsRequest;
+use App\Http\Resources\OpportunityDetail as OpportunityDetailResource;
 use App\Models\OpportunityDetail;
-use Illuminate\Http\Request;
 
 class OpportunityDetailController extends Controller
 {
@@ -33,9 +34,21 @@ class OpportunityDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OpportunityDetailsRequest $request)
     {
-        //
+        $opportunityDetail = OpportunityDetail::create([
+            'opportunity_id' => $request->opportunityId,
+            'benefits' => $request->benefits,
+            'application_process' => $request->applicationProcess,
+            'eligibilities' => $request->eligibilities,
+            'start_date' => $request->startDate,
+            'end_date' => $request->endDate,
+            'official_link' => $request->officialLink,
+            'further_queries' => $request->furtherQueries,
+            'eligible_regions' => json_encode($request->eligibleRegions)
+        ]);
+
+        return new OpportunityDetailResource($opportunityDetail);
     }
 
     /**
@@ -46,7 +59,7 @@ class OpportunityDetailController extends Controller
      */
     public function show(OpportunityDetail $opportunityDetail)
     {
-        //
+        return new OpportunityDetailResource($opportunityDetail);
     }
 
     /**
@@ -67,9 +80,21 @@ class OpportunityDetailController extends Controller
      * @param  \App\Models\OpportunityDetail  $opportunityDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OpportunityDetail $opportunityDetail)
+    public function update(OpportunityDetailsRequest $request, OpportunityDetail $opportunityDetail)
     {
-        //
+        $opportunityDetail->update([
+            'opportunity_id' => $request->opportunityId,
+            'benefits' => $request->benefits,
+            'application_process' => $request->applicationProcess,
+            'eligibilities' => $request->eligibilities,
+            'start_date' => $request->startDate,
+            'end_date' => $request->endDate,
+            'official_link' => $request->officialLink,
+            'further_queries' => $request->furtherQueries,
+            'eligible_regions' => json_encode($request->eligibleRegions)
+        ]);
+
+        return new OpportunityDetailResource($opportunityDetail);
     }
 
     /**

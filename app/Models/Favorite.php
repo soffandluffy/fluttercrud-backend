@@ -9,4 +9,13 @@ class Favorite extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function opportunity(){
+        return $this->belongsTo(Opportunity::class);
+    }
+
 }

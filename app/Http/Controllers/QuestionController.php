@@ -2,8 +2,11 @@ d<?php
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionRequest;
+use App\Http\Resources\QuestionCollection;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Http\Resources\Question as QuestionResource;
 
 class QuestionController extends Controller
 {
@@ -14,7 +17,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        return new QuestionCollection(Question::paginate(10));
     }
 
     /**
@@ -33,9 +36,14 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionRequest $request)
     {
-        //
+        $question = Question::create([
+            'question' => $request->question,
+            'created_by' => $request->created_by,
+        ]);
+
+        return new QuestionResource($question);
     }
 
     /**
@@ -69,7 +77,12 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $question->update([
+            'question' => $request->question,
+            'created_by' => $request->created_by,
+        ]);
+
+        return new QuestionResource($question);
     }
 
     /**
